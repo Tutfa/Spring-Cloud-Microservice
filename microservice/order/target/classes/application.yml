@@ -1,0 +1,46 @@
+server:
+  port: 8082 #服务端口
+myspcloud:
+  item:
+    url: http://127.0.0.1:8081/item/
+
+###起个名字作为服务名称(该服务注册到eureka注册中心的名称，比如订单服务)
+spring:
+  application:
+    name: app-order
+
+    ###服务注册到consul注册中心的地址
+    ###spring.cloud.consul.host/port配置的是Consul注册中心(Consul服务器)的地址和端口（Server节点和Client节点都可以），Spring Cloud Consul调用 Consul HTTP REST 接口，进行服务注册
+    ###spring.cloud.consul.discovery.hostname配置 Spring Boot 服务的主机地址，也可以不进行配置，默认本机地址。
+    ###healthCheckPath: /health 指定健康检查的url地址(保证该接口地址返回http 2xx 返回码，当然也可以忽略健康检查register-health-check: false)
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        healthCheckPath: /health
+        healthCheckInterval: 5s
+
+
+###服务注册到eureka注册中心的地址
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://jdy:123456@127.0.0.1:8100/eureka
+#    ###因为该应用为服务提供者，是eureka的一个客户端，需要注册到注册中心
+#    register-with-eureka: true
+#    ###是否需要从eureka上检索服务
+#    fetch-registry: true
+#  instance:
+#    prefer-ip-address: true #将自己的ip地址注册到Eureka服务器中
+#    ip-address: 127.0.0.1
+#    instance-id: ${spring.application.name}###${server.port} #指定实例id
+
+#开启Hystrix断路器
+feign:
+  hystrix:
+    enabled: true
+
+#配置Swagger接口扫描范围
+swagger:
+base-package: com.zpc.order
